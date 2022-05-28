@@ -1,20 +1,23 @@
 '''
-Sample k-armed bandit problem environment. To be used with stable-baselines3
+This is a simple K-Armed bandit environment, as mentioned in the book titled "Reinforcement Learning" by Sutton and Barto.
+The idea is simple: your agent's environment consists of k-number of levers. In this specific repo it uses 10 levers.
+Each lever has a reward value associated with actuating it. The agents job is to learn which levers to pull or not pull to
+maximize its returned reward.
 
-There are 10 actions represented as levers with different reward values. The
-agent's job is to maximize it's reward by avoiding levers that subtract the total
-reward. 
+action space: Which lever, and whether or not to pull it(not pulling doesn't yield any points). -> MultiDiscrete([2 for _ in range(10)]) 
+observation space: The 10 different levers and their respective states -> MultiDiscrete([10,2])
+
+Rewards: Each lever has an associated reward value. Defined below.
 '''
 import gym
 from gym import spaces
 import numpy as np
 
 
-#the position of each reward value indicates the respective lever.
-
+#the position of each reward value indicates the respective lever. These can be modified as you'd like.
 REWARDS = [-3,3,-2,1,5,-2,4,-1,1,5]
 
-
+#TODO: Change class name from CustomEnv to something more descriptive.
 class CustomEnv(gym.Env):
     metadata = {
         'render.modes' : ['human']
@@ -25,26 +28,11 @@ class CustomEnv(gym.Env):
 
         self.total_steps = 0
         self.total_reward = 0
-        self.map = [0 for _ in range(10)]
-        #https://www.gymlibrary.ml/content/spaces/?highlight=discrete#discrete
-        #Define 3 possible actions
-        '''
-        States of each individual lever are either on/off.
-
-        Action-Space: MultiDiscrete[2,11]. There are 10 levers[0-9] and two options [0,1].
-
-        Observation space: list of lever states -> [0,0,0,1,0,1,1,0,1,0]
-
-        Rewards: Each lever has a reward number ranging from -5 to +5. These values
-        remain static throughout all of the training.
-        The agent must modify it's policy for maximum rewards.
-        '''
+        self.map = [0 for _ in range(10)] #Map defines the observation space for each episode/epoch.
         self.action_space = spaces.MultiDiscrete([10,2])
         #There are 10 levers and their respective on/off states will be returned to the agent as the observation.
         self.observation_space = spaces.MultiDiscrete([2 for _ in range(10)])
         self.reward_range = (-5,5)
-    def _get_obs(self) -> spaces.MultiDiscrete:
-        return self.map
 
     def step(self, action):
         reward = 0
@@ -69,16 +57,10 @@ class CustomEnv(gym.Env):
         return self.map, reward, done, {}
 
     def reset(self) -> spaces.MultiDiscrete:
-        #reset the total steps variable
-
-        info = {
-            "total_reward":self.total_reward
-        }
-
         self.total_steps = 0
         self.total_reward = 0
         self.map = [0 for _ in range(10)]
-        observation = self._get_obs()
+        observation = self.map
 
         return observation
 

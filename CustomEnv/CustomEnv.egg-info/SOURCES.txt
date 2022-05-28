@@ -2,4 +2,5 @@ setup.py
 CustomEnv.egg-info/PKG-INFO
 CustomEnv.egg-info/SOURCES.txt
 CustomEnv.egg-info/dependency_links.txt
+CustomEnv.egg-info/requires.txt
 CustomEnv.egg-info/top_level.txt
