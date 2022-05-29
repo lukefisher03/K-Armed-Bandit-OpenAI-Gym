@@ -1,5 +1,4 @@
 from setuptools import setup
-import stable_baselines3
 
 setup(
     name='CustomEnv',
