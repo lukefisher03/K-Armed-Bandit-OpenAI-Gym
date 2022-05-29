@@ -17,6 +17,13 @@ pip install -e CustomEnv
 ### Using Stable-Baselines3
 Being an OpenAI gym environment, you can use sb3 for rapid testing of multiple different RL algorithms. The default example uses PPO with 50,000 timesteps.
 
+Sample output ->
+
+![sample output](/assets/sample.png)
+
+
+In this case 19 is the best case scenario and highest available total reward.
+
 #### To-Do/Ideas
 1. Entirely different reward values for turning off switches. 
 2. Allow the alg to prematurely end before 10 steps.
